@@ -1,0 +1,6 @@
+Name: Vulpix
+Height: 0.6 m
+Weight: 9.9 kg
+Types: Fire
+Abilities: Flash-fire, Drought
+Abilities: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/37.png

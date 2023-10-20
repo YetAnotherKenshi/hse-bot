@@ -1,0 +1,6 @@
+Name: Charmander
+Height: 0.6 m
+Weight: 8.5 kg
+Types: Fire
+Abilities: Blaze, Solar-power
+Abilities: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png

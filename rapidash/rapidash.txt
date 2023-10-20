@@ -1,0 +1,6 @@
+Name: Rapidash
+Height: 1.7 m
+Weight: 95.0 kg
+Types: Fire
+Abilities: Run-away, Flash-fire, Flame-body
+Abilities: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/78.png

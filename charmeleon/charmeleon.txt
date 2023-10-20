@@ -1,0 +1,6 @@
+Name: Charmeleon
+Height: 1.1 m
+Weight: 19.0 kg
+Types: Fire
+Abilities: Blaze, Solar-power
+Abilities: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png
