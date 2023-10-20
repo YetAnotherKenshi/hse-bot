@@ -1,6 +1,0 @@
-Name: Arcanine
-Height: 1.9 m
-Weight: 155.0 kg
-Types: Fire
-Abilities: Intimidate, Flash-fire, Justified
-Abilities: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/59.png

@@ -1,6 +1,0 @@
-Name: Ponyta
-Height: 1.0 m
-Weight: 30.0 kg
-Types: Fire
-Abilities: Run-away, Flash-fire, Flame-body
-Abilities: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/77.png

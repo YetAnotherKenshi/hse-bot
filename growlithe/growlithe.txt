@@ -1,6 +1,0 @@
-Name: Growlithe
-Height: 0.7 m
-Weight: 19.0 kg
-Types: Fire
-Abilities: Intimidate, Flash-fire, Justified
-Abilities: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/58.png

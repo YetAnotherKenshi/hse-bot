@@ -1,6 +1,0 @@
-Name: Charizard
-Height: 1.7 m
-Weight: 90.5 kg
-Types: Fire, Flying
-Abilities: Blaze, Solar-power
-Abilities: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png
