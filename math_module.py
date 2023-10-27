@@ -1,7 +1,6 @@
 import os
 import numpy as np 
 from image import latex_generator
-from utils import generate_id
 
 def convert_number(n):
     """Округляет число до 3 знаков после запятой"""
