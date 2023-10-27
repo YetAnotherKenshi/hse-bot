@@ -42,7 +42,7 @@ def determinant(matrix, colors, cid):
     $$
     """
 
-    id = generate_id(cid)
+    id = "image_"+cid
 
     latex_generator(latex_string, f'{id}.png', colors)
 
@@ -93,7 +93,7 @@ def inverse(matrix, colors, cid):
     $$
     """)
 
-    id = generate_id(cid)
+    id = "image_"+cid
 
     latex_generator(latex_string, f'{id}.png', colors)
 
@@ -130,7 +130,7 @@ def solve(matrix, vector, colors, cid):
     \right)
     $$""" + "\n".join(s3)
 
-    id = generate_id(cid)
+    id = "image_"+cid
 
     latex_generator(latex_string, f'{id}.png', colors)
 
@@ -172,7 +172,7 @@ def power(matrix, power, colors, cid):
     \end{array}
     \right)
     $$"""
-    id = generate_id(cid)
+    id = "image_"+cid
 
     latex_generator(latex_string, f'{id}.png', colors)
 

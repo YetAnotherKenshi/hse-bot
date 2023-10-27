@@ -17,6 +17,31 @@ async def send_welcome(message: types.Message):
     db_service.add_user(cid)
     await message.answer("Привет! Меня зовут Лин-А\nЯ — телеграм-бот, который немного разбирается в линейной алгебре.", reply_markup=nav.greeting)
 
+@dp.message_handler(commands=['help'])
+async def send_help(message: types.Message):
+    """Хэндлер команды help"""
+    await message.answer("""
+Основные функции
+
+Этот бот позволяет пользователю производить некоторые операции из линейной алгебры:
+
+— Вычислить определитель матрицы
+— Найти обратную матрицу
+— Возвести матрицу в степень
+— Решить систему линейных уравнений
+
+Как вводить данные
+
+Чтобы ввести матрицу используйте пробелы, чтобы разделить числа, и точку с запятой в окончании каждого ряда.
+
+Например, вот так может выглядеть квадратная матрица 3x3:
+1 4 3; 0 0 4; 3 6 5
+
+А вот так 3x2:
+4 3; -4  1; 9 -1
+
+Также вы можете выбрать одну из предложенных цветовых тем для отрисовки результата.""")
+
 @dp.callback_query_handler()
 async def change_msg(callback: types.CallbackQuery):
     """Хэндлер callback функции"""
@@ -85,7 +110,7 @@ async def change_msg(callback: types.CallbackQuery):
         await callback.message.edit_text(text, reply_markup=markup)
 
 @dp.message_handler()
-async def menu_message(message: types.Message):
+async def send_message(message: types.Message):
     """Хэндлер сообщений"""
 
     cid = str(message["from"]["id"])
