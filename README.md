@@ -6,7 +6,7 @@
 
 Бот развёрнут на сервере (Linux Ubuntu/Nginx) с использованием WEBHOOKS.
 
-[Ссылка на телеграм](https://t.me/lin_a_bot)
+[Ссылка на бота](https://t.me/lin_a_bot)
 
 ## Возможности
 
