@@ -22,11 +22,10 @@ def determinant(matrix, colors, cid):
     Возвращаемое значение:
         id (str): id сгенерированного изображения
     """
-    a = np.matrix(matrix)
-    det = convert_number(np.linalg.det(a))
-    a = a.tolist()
+    matrix = np.matrix(matrix).tolist()
+    det = convert_number(np.linalg.det(matrix))
     rows = []
-    for row in a:
+    for row in matrix:
         row_str = " & ".join([str(elem) for elem in row])
         rows.append(row_str)
     s = "\\\\".join(rows)
@@ -69,10 +68,11 @@ def inverse(matrix, colors, cid):
         rows1.append(row_str)
     s = "\\\\".join(rows1)
 
-    for row in np.linalg.inv(matrix).tolist():
-        row_str = " & ".join([str(convert_number(elem)) for elem in row])
-        rows2.append(row_str)
-    s2 = "\\\\".join(rows2)
+    if det != 0:
+        for row in np.linalg.inv(matrix).tolist():
+            row_str = " & ".join([str(convert_number(elem)) for elem in row])
+            rows2.append(row_str)
+        s2 = "\\\\".join(rows2)
 
     latex_string = fr"""
     $$
@@ -116,7 +116,7 @@ def solve(matrix, vector, colors, cid):
     solution = np.linalg.solve(matrix, vector).tolist()
     s = list(map(lambda x: r" & ".join(map(str,x)) + r" \\", matrix))
     s2 = list(map(lambda x: r" & ".join(map(str,x)) + r" \\", vector))
-    s3 = list(map(lambda x: "$$\n" + f"x_{x[0]} = " + f"{convert_number(x[1][0])}\n" + "$$", enumerate(solution)))
+    s3 = list(map(lambda x: "$$\n" + f"x_{x[0]+1} = " + f"{convert_number(x[1][0])}\n" + "$$", enumerate(solution)))
     latex_string = r"""
     $$
     A = \left(
@@ -177,9 +177,12 @@ def power(matrix, power, colors, cid):
 
     return id
 
-def check_matrix_issquare(matrix):
+def check_matrix_issquare(matrix, func):
     """Проверяет, является ли матрица квадратной"""
     matrix = np.linalg.matrix_power(np.matrix(matrix), 2)
+    det = int(np.linalg.det(matrix))
+    if det == 0 and func == "solve":
+        raise np.linalg.LinAlgError("Singular matrix")
 
 def remove_file(id, folder):
     """Удаляет изображение с определённым id"""

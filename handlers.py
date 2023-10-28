@@ -140,6 +140,9 @@ async def send_message(message: types.Message):
             await bot.send_message(cid, "Вы ввели не квадратную матрицу!", reply_markup=nav.back)
         except ValueError:
             await bot.send_message(cid, "Вы ввели неправильную матрицу!", reply_markup=nav.back)
+        except SyntaxError:
+            await bot.send_message(cid, "Неправильный ввод!", reply_markup=nav.back)
+
     
     # Обработка функции нахождения обратной матрицы
     elif state == States.INV:
@@ -157,11 +160,13 @@ async def send_message(message: types.Message):
             await bot.send_message(cid, "Вы ввели не квадратную матрицу!", reply_markup=nav.back)
         except ValueError:
             await bot.send_message(cid, "Вы ввели неправильную матрицу!", reply_markup=nav.back)
+        except SyntaxError:
+            await bot.send_message(cid, "Неправильный ввод!", reply_markup=nav.back)
     
     # Обработка 1 этапа функции возведения матрицы в степень
     elif state == States.POWER:
         try:
-            check_matrix_issquare(message_text)
+            check_matrix_issquare(message_text, "power")
             storage.append(message_text)
             await bot.send_message(cid, "В какую степень возводим?", reply_markup=nav.back)
             db_service.update_user_state(cid, States.POWER_WAIT)
@@ -170,6 +175,8 @@ async def send_message(message: types.Message):
             await bot.send_message(cid, "Вы ввели не квадратную матрицу!", reply_markup=nav.back)
         except ValueError:
             await bot.send_message(cid, "Вы ввели неправильную матрицу!", reply_markup=nav.back)
+        except SyntaxError:
+            await bot.send_message(cid, "Неправильный ввод!", reply_markup=nav.back)
     
     # Обработка 2 этапа функции возведения матрицы в степень
     elif state == States.POWER_WAIT:
@@ -185,19 +192,26 @@ async def send_message(message: types.Message):
             await bot.send_message(cid, "Что делаем дальше?", reply_markup=nav.menu)
         except ValueError:
             await bot.send_message(cid, "Вы ввели не число!", reply_markup=nav.back)
+        except SyntaxError:
+            await bot.send_message(cid, "Неправильный ввод!", reply_markup=nav.back)
     
     # Обработка 1 этапа функции решения системы линейных уравнений
     elif state == States.SOLVE:
         try:
-            check_matrix_issquare(message_text)
+            check_matrix_issquare(message_text, "solve")
             storage.append(message_text)
             await bot.send_message(cid, "Введите вектор", reply_markup=nav.back)
             db_service.update_user_state(cid, States.SOLVE_WAIT)
             db_service.update_user_storage(cid, storage)
-        except np.linalg.LinAlgError:
-            await bot.send_message(cid, "Вы ввели не квадратную матрицу!", reply_markup=nav.back)
+        except np.linalg.LinAlgError as error:
+            if str(error) == "Singular matrix":
+                await bot.send_message(cid, "Я пока не умею решать уравнения для матрицы с нулевым определителем :(", reply_markup=nav.back)
+            else:
+                await bot.send_message(cid, "Вы ввели не квадратную матрицу!", reply_markup=nav.back)
         except ValueError:
             await bot.send_message(cid, "Вы ввели неправильную матрицу!", reply_markup=nav.back)
+        except SyntaxError:
+            await bot.send_message(cid, "Неправильный ввод!", reply_markup=nav.back)
     
     # Обработка 1 этапа функции решения системы линейных уравнений
     elif state == States.SOLVE_WAIT:
@@ -211,8 +225,12 @@ async def send_message(message: types.Message):
             db_service.update_user_state(cid, States.MAIN_MENU)
             db_service.update_user_storage(cid, storage)
             await bot.send_message(cid, "Что делаем дальше?", reply_markup=nav.menu)
-        except ValueError:
+        except ValueError as error:
             await bot.send_message(cid, "Вектор неправильной длины!", reply_markup=nav.back)
+        except SyntaxError:
+            await bot.send_message(cid, "Неправильный ввод!", reply_markup=nav.back)
+
+    # Обработка функции обратной связи
     elif state == States.FEEDBACK:
         result = save_feedback(cid, message_text)
         if result != None:

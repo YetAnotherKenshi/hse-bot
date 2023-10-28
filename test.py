@@ -1,9 +1,10 @@
 import os
 import unittest
 import numpy as np
-from unittest.mock import patch
+import shutil
 from image import latex_generator
 from math_module import check_matrix_issquare, convert_number, determinant, inverse, remove_file, solve, power
+from utils import save_feedback
 
 class ImageTest(unittest.TestCase):
     def test_correct_latex(self):
@@ -76,6 +77,15 @@ class TestDeterminant(unittest.TestCase):
         cid = 'determinant3'
         with self.assertRaises(ValueError):
             determinant(matrix, colors, cid)
+    def test_determinant_5(self):
+        """Тест с нулевой матрицей"""
+        matrix = '0 0; 0 0'
+        colors = ((255, 255, 255), (0, 0, 0))
+        cid = 'determinant5'
+        expected_output = 'image_determinant5'
+        expected_path = 'image_determinant5.png'
+        self.assertEqual(determinant(matrix, colors, cid), expected_output)
+        self.assertTrue(os.path.exists(os.path.join("images", expected_path)))
 
 class TestInverse(unittest.TestCase):
     def test_inverse_1(self):
@@ -101,6 +111,15 @@ class TestInverse(unittest.TestCase):
         cid = 'inverse3'
         with self.assertRaises(ValueError):
             inverse(matrix, colors, cid)
+    def test_inverse_4(self):
+        """Тест с нулевой матрицей"""
+        matrix = '0 0; 0 0'
+        colors = ((255, 255, 255), (0, 0, 0))
+        cid = 'inverse4'
+        expected_output = 'image_inverse4'
+        expected_path = 'image_inverse4.png'
+        self.assertEqual(inverse(matrix, colors, cid), expected_output)
+        self.assertTrue(os.path.exists(os.path.join("images", expected_path)))
 
 class TestSolve(unittest.TestCase):
     def test_solve_1(self):
@@ -137,6 +156,14 @@ class TestSolve(unittest.TestCase):
         cid = 'solve4'
         with self.assertRaises(ValueError):
             solve(matrix, vector, colors, cid)
+    def test_solve_5(self):
+        """Тест с нулевой матрицей и вектором правильного размера"""
+        matrix = '0 0; 0 0'
+        vector = '1; 2'
+        colors = ((255, 255, 255), (0, 0, 0))
+        cid = 'solve5'
+        with self.assertRaises(ValueError):
+            solve(matrix, vector, colors, cid)
 
 class TestPower(unittest.TestCase):
     def test_power_1(self):
@@ -171,12 +198,17 @@ class TestSquareCheck(unittest.TestCase):
         """Тест с неквадратной матрицей"""
         matrix = '1 2 3; 4 5 6'
         with self.assertRaises(np.linalg.LinAlgError):
-            check_matrix_issquare(matrix)
+            check_matrix_issquare(matrix, "power")
     def test_square_2(self):
         """Тест с неверной матрицей"""
         matrix = '1 2 3; 4 5 6; 7 8'
         with self.assertRaises(ValueError):
-            check_matrix_issquare(matrix)
+            check_matrix_issquare(matrix, "power")
+    def test_square_3(self):
+        """Тест с правильной матрицей и нулевым определителем"""
+        matrix = '1 2 3; 4 5 6; 7 8 9'
+        with self.assertRaises(np.linalg.LinAlgError):
+            check_matrix_issquare(matrix, "solve")
 
 class TestFileRemoval(unittest.TestCase):
     def test_removal_1(self):
@@ -188,6 +220,34 @@ class TestFileRemoval(unittest.TestCase):
         cid = 'image2'
         with self.assertRaises(FileNotFoundError):
             remove_file(cid, "images")
+
+class TestSaveFeedback(unittest.TestCase):
+    def setUp(self):
+        self.NOT_A_FOLDER_PATH = 'test_not_a_folder'
+        self.TEST_FOLDER_PATH = 'test_report_folder'
+
+    def test_report_isnt_folder(self):
+        with open(self.NOT_A_FOLDER_PATH, 'w') as f:
+            f.write('')
+        self.assertIsNone(save_feedback('', 0, folder=self.NOT_A_FOLDER_PATH))
+
+    def test_write_to_folder(self):
+        os.mkdir(self.TEST_FOLDER_PATH)
+        report_text='hello'
+        path = save_feedback(report_text, 0, folder=self.TEST_FOLDER_PATH)
+        
+        self.assertTrue(os.path.exists(path))
+
+        with open(path, 'r') as f:
+            text_from_file = f.read()
+        self.assertEqual(text_from_file, report_text)
+
+    def tearDown(self):
+        if os.path.exists(self.NOT_A_FOLDER_PATH):
+            os.remove(self.NOT_A_FOLDER_PATH)
+
+        if os.path.exists(self.TEST_FOLDER_PATH):
+            shutil.rmtree(self.TEST_FOLDER_PATH)
 
 if __name__ == '__main__':
     unittest.main()
