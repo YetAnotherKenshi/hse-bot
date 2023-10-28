@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 
-def save_feedback(text, cid, folder='reports'):
+def save_feedback(cid, text, folder='reports'):
     """
     Генерирует изображение из LaTeX формулы
     
